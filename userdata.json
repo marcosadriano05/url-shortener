@@ -1,0 +1,20 @@
+{
+  "_id": "1",
+  "name": "Marcos Adriano",
+  "email": "marcos@gmail.com",
+  "password": "12345",
+  "created_at": "14/06/2021",
+  "updated_at": "14/06/2021",
+  "urls": [
+    {
+      "original_url": "https://facebook.com",
+      "shorted_url": "http://localhost:3000/efgh",
+      "created_at": "14/06/2021"
+    },
+    {
+      "original_url": "https://google.com",
+      "shorted_url": "http://localhost:3000/abcd",
+      "created_at": "14/06/2021"
+    }
+  ]
+}
