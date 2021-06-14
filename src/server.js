@@ -1,6 +1,6 @@
 require('dotenv').config()
 const express = require('express')
-const userdata = require('../userdata.json')
+const { userscollection } = require('../userdata.json')
 
 const server = express()
 
@@ -13,11 +13,23 @@ server.post('/signup', (req, res) => {
     return res.json({ message: "Error" })
   }
 
-  return res.json({ message: 'Successful login' })
+  return res.status(200).json({ message: 'Registration done successfully' })
+})
+
+server.post('/login', (req, res) => {
+  const data = req.body
+
+  const user = userscollection.find(user => user.email === data.email)
+
+  if (!user) {
+    return res.json({ message: "User not exists" })
+  }
+
+  return res.json(user)
 })
 
 server.get('/dashboard', (req, res) => {
-  res.json(userdata)
+  res.json(userscollection)
 })
 
 const port = process.env.PORT || 3000
