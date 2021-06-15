@@ -7,6 +7,11 @@ class CustomUrlController {
 
     try {
       const user = await User.findOne({ urls: { $elemMatch: { shorted_url: customUrl } } })
+
+      if (!user) {
+        return res.status(404).json({ message: 'Site not found' })
+      }
+
       const originalUrl = user.urls.find(url => url.shorted_url === customUrl)
       
       res.status(200).redirect(originalUrl.original_url)
