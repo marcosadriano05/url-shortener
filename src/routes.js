@@ -1,15 +1,13 @@
 const express = require('express')
+const jwt = require('jsonwebtoken')
 const routes = express.Router()
 
 const User = require('./models/User')
-
-const { userscollection } = require('../userdata.json')
 
 routes.post('/signup', async (req, res) => {
   const data = req.body
 
   const isUserExists = await User.findOne({ email: data.email })
-  console.log(isUserExists)
 
   if (isUserExists) {
     return res.json({ message: 'User alredy exists' })
@@ -39,11 +37,27 @@ routes.post('/login', async (req, res) => {
     return res.json({ message: "User not exists" })
   }
 
-  return res.json(user)
+  try {
+    const token = jwt.sign({ id: user._id }, 'secret', { expiresIn: '1h' })
+    return res.status(200).json(token)
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error' })
+  }
 })
 
-routes.get('/dashboard', (req, res) => {
-  res.json(userscollection)
+routes.get('/dashboard', async (req, res) => {
+  const authorizationHeader = req.headers.authorization
+  const token = authorizationHeader.split(' ')[1]
+
+  const { id } = jwt.verify(token, 'secret')
+  
+  const user = await User.findOne({ _id: id })
+
+  if (!user) {
+    res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  res.status(200).json(user)
 })
 
 module.exports = routes

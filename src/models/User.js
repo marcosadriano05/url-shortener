@@ -5,11 +5,6 @@ const UserSchema = new Schema({
   name: String,
   email: String,
   password: String,
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  updated_at: Date,
   urls: [
     {
       original_url: String,
@@ -20,6 +15,8 @@ const UserSchema = new Schema({
       }
     }
   ]
+}, {
+  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
 
 const User = mongoose.model('User', UserSchema)
