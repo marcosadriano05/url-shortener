@@ -14,16 +14,18 @@ routes.post('/signup', async (req, res) => {
   }
 
   if (data.password !== data.same_password) {
-    return res.json({ message: "Password not match" })
+    return res.json({ message: 'Password not match' })
   }
 
-  await User.create({
-    name: data.name,
-    email: data.email,
-    password: data.password
-  }, (err, _) => {
-    if (err) return console.log(err)
-  })
+  try {
+    await User.create({
+      name: data.name,
+      email: data.email,
+      password: data.password
+    })
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' })
+  }
 
   return res.status(200).json({ message: 'Registration done successfully' })
 })
@@ -34,7 +36,7 @@ routes.post('/login', async (req, res) => {
   const user = await User.findOne({ email: data.email })
 
   if (!user) {
-    return res.json({ message: "User not exists" })
+    return res.json({ message: 'User not exists' })
   }
 
   try {
