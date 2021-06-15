@@ -1,8 +1,6 @@
 const express = require('express')
 const routes = express.Router()
 
-const User = require('./models/User')
-
 const loginController = require('./controllers/LoginController')
 const signUpController = require('./controllers/SignUpController')
 const urlController = require('./controllers/UrlController')
@@ -29,6 +27,7 @@ routes.get('/dashboard', async (req, res) => {
   }
 })
 
-routes.post('/addurl', urlController.add)
+routes.get('/userurl', urlController.getAll)
+routes.post('/userurl', urlController.add)
 
 module.exports = routes
