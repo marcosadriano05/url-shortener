@@ -5,32 +5,9 @@ const routes = express.Router()
 const User = require('./models/User')
 
 const loginController = require('./controllers/LoginController')
+const signUpController = require('./controllers/SignUpController')
 
-routes.post('/signup', async (req, res) => {
-  const data = req.body
-
-  const isUserExists = await User.findOne({ email: data.email })
-
-  if (isUserExists) {
-    return res.json({ message: 'User alredy exists' })
-  }
-
-  if (data.password !== data.same_password) {
-    return res.json({ message: 'Password not match' })
-  }
-
-  try {
-    await User.create({
-      name: data.name,
-      email: data.email,
-      password: data.password
-    })
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' })
-  }
-
-  return res.status(200).json({ message: 'Registration done successfully' })
-})
+routes.post('/signup', signUpController.signUp)
 
 routes.post('/login', loginController.login)
 
