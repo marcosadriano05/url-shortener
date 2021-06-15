@@ -12,7 +12,7 @@ routes.post('/signup', async (req, res) => {
   console.log(isUserExists)
 
   if (isUserExists) {
-    return res.json({ message: 'User alredy exists'})
+    return res.json({ message: 'User alredy exists' })
   }
 
   if (data.password !== data.same_password) {

@@ -3,7 +3,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const routes = require('./routes')
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@projects.bctlc.mongodb.net/url-shortener`, {
+const mongodbUser = process.env.MONGO_DB_USER
+const mongdbPassword = process.env.MONGO_DB_PASSWORD
+mongoose.connect(
+  `mongodb+srv://${mongodbUser}:${mongdbPassword}@projects.bctlc.mongodb.net/url-shortener`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
