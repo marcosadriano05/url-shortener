@@ -1,6 +1,7 @@
 const User = require('../models/User')
 
 const authUseCase = require('../utils/AuthUseCase')
+const generateUrlUseCase = require('../utils/GenerateUrlUseCase')
 
 class UrlController {
   async getAll (req, res) {
@@ -32,7 +33,10 @@ class UrlController {
   
       const data = req.body
   
-      const newURL = { original_url: data.url }
+      const newURL = { 
+        original_url: data.url,
+        shorted_url: `http://localhost:3000/custom/${generateUrlUseCase.create()}` 
+      }
   
       await User.updateOne({ _id: id }, { $push: { urls: newURL } })
       res.status(200).json({ message: 'Sucess request' })
