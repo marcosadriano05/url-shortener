@@ -3,6 +3,11 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
 class AuthUseCase {
+  create (id) {
+    const token = jwt.sign({ id }, 'secret', { expiresIn: '1h' })
+    return token
+  }
+
   async auth (bearerToken) {
     if (!bearerToken) {
       return {
