@@ -11,31 +11,61 @@ routes.post('/signup', signUpController.signUp)
 
 routes.post('/login', loginController.login)
 
-routes.get('/dashboard', async (req, res) => {
-  const authorizationHeader = req.headers.authorization
-  const token = authorizationHeader.split(' ')[1]
-
-  const { id } = jwt.verify(token, 'secret')
-  
-  const user = await User.findOne({ _id: id })
-
-  if (!user) {
-    res.status(401).json({ message: 'Unauthorized' })
+const authUseCase = async (bearerToken) => {
+  if (!bearerToken) {
+    return {
+      isAuth: false,
+      id: '',
+      message: 'No header has been provided'
+    }
   }
 
-  res.status(200).json(user)
+  try {
+    const token = bearerToken.split(' ')[1]
+  
+    const { id } = jwt.verify(token, 'secret')
+  
+    const user = await User.findOne({ _id: id })
+
+    if (!user) {
+      return {
+        isAuth: false,
+        id,
+        message: 'Unauthorized'
+      }
+    }
+  
+    return {
+      isAuth: true,
+      id,
+      message: 'Authorized'
+    }
+  } catch (error) {
+    return {
+      isAuth: false,
+      id,
+      message: 'Server error'
+    }
+  }
+}
+
+routes.get('/dashboard', async (req, res) => {
+  const authorizationHeader = req.headers.authorization
+  const { isAuth, message } = await authUseCase(authorizationHeader)
+
+  if (!isAuth) {
+    res.status(401).json({ message })
+  }
+
+  res.status(200).json({ message })
 })
 
 routes.post('/addurl', async (req, res) => {
   const authorizationHeader = req.headers.authorization
-  const token = authorizationHeader.split(' ')[1]
+  const { isAuth, id, message } = await authUseCase(authorizationHeader)
 
-  const { id } = jwt.verify(token, 'secret')
-  
-  const user = await User.findOne({ _id: id })
-
-  if (!user) {
-    res.status(401).json({ message: 'Unauthorized' })
+  if (!isAuth) {
+    res.status(401).json({ message })
   }
 
   const data = req.body
