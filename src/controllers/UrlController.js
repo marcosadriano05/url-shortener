@@ -35,7 +35,7 @@ class UrlController {
   
       const newURL = { 
         original_url: data.url,
-        shorted_url: `http://localhost:3000/custom/${generateUrlUseCase.create()}` 
+        shorted_url: `http://localhost:3333/custom/${generateUrlUseCase.create()}` 
       }
   
       await User.updateOne({ _id: id }, { $push: { urls: newURL } })

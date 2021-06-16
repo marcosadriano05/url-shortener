@@ -16,6 +16,6 @@ const server = express()
 server.use(express.json())
 server.use(routes)
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3333
 
 server.listen(port, () => console.log(`Server on port ${port}`))
