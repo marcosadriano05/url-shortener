@@ -1,12 +1,19 @@
 const User = require('../models/User')
 
 const encryptUseCase = require('../utils/EncryptUseCase')
+const emailValidator = require('../utils/ValidationUseCase')
 
 class SignUpController {
   async signUp (req, res) {
     const data = req.body
   
     try {
+      const isEmailValid = emailValidator.isValid(data.email)
+
+      if (!isEmailValid) {
+        return res.status(404).json({ message: 'Email with invalid format' })
+      }
+
       const isUserExists = await User.findOne({ email: data.email })
     
       if (isUserExists) {
