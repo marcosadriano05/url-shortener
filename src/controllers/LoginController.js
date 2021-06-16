@@ -8,9 +8,9 @@ class LoginController {
   
     try {
       const user = await User.findOne({ email: data.email })
-    
-      if (!user) {
-        return res.json({ message: 'User not exists' })
+
+      if (!user || user.password !== data.password) {
+        return res.json({ message: 'Invalid credentials' })
       }
   
       const token = authUseCase.create(user._id)
