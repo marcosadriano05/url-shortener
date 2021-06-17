@@ -10,14 +10,17 @@ class UrlController {
       const { isAuth, id, message } = await authUseCase.auth(authorizationHeader)
   
       if (!isAuth) {
-        res.status(401).json({ message })
+        res.status(401).json({ message, message_ptbr: 'Sem autorização' })
       }
 
       const { urls } = await User.findOne({ _id: id })
 
       res.status(200).json(urls)
     } catch (error) {
-      res.status(500).json({ message: 'Server error' })
+      res.status(500).json({ 
+        message: 'Server error',
+        message_ptbr: 'Erro no servidor'
+      })
     }
   }
 
@@ -28,7 +31,7 @@ class UrlController {
       const { isAuth, id, message } = await authUseCase.auth(authorizationHeader)
   
       if (!isAuth) {
-        res.status(401).json({ message })
+        res.status(401).json({ message, message_ptbr: 'Sem autorização' })
       }
   
       const data = req.body
@@ -39,9 +42,15 @@ class UrlController {
       }
   
       await User.updateOne({ _id: id }, { $push: { urls: newURL } })
-      res.status(200).json({ message: 'Sucess request' })
+      res.status(200).json({ 
+        message: 'URL registred',
+        message_ptbr: 'URL cadastrada'
+      })
     } catch (error) {
-      res.status(500).json({ message: 'Server error' })
+      res.status(500).json({ 
+        message: 'Server error',
+        message_ptbr: 'Erro no servidor'
+      })
     }
   }
 }

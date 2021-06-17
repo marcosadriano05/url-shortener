@@ -11,17 +11,26 @@ class SignUpController {
       const isEmailValid = emailValidator.isValid(data.email)
 
       if (!isEmailValid) {
-        return res.status(404).json({ message: 'Email with invalid format' })
+        return res.status(400).json({ 
+          message: 'Email with invalid format',
+          message_ptbr: 'Email com formato inválido'
+        })
       }
 
       const isUserExists = await User.findOne({ email: data.email })
     
       if (isUserExists) {
-        return res.json({ message: 'User alredy exists' })
+        return res.status(400).json({ 
+          message: 'User alredy exists',
+          message_ptbr: 'Usuário já existe'
+        })
       }
     
       if (data.password !== data.same_password) {
-        return res.json({ message: 'Password not match' })
+        return res.status(400).json({ 
+          message: 'Password not match',
+          message_ptbr: 'As senhas precisam ser iguais'
+        })
       }
 
       const encryptedPassword = await encryptUseCase.encrypt(data.password)
@@ -32,9 +41,15 @@ class SignUpController {
         password: encryptedPassword
       })
 
-      return res.status(200).json({ message: 'Registration done successfully' })
+      return res.status(200).json({ 
+        message: 'Registration done successfully',
+        message_ptbr: 'Cadastro realizado com sucesso'
+      })
     } catch (error) {
-      res.status(500).json({ message: 'Server error' })
+      res.status(500).json({ 
+        message: 'Server error',
+        message_ptbr: 'Erro no servidor'
+      })
     }
   }
 }
