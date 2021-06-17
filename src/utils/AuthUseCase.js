@@ -35,6 +35,8 @@ class AuthUseCase {
       return {
         isAuth: true,
         id,
+        user_name: user.name,
+        user_email: user.email,
         message: 'Authorized'
       }
     } catch (error) {

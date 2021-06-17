@@ -4,13 +4,15 @@ class AuthController {
   async isAuth (req, res) {
     const authHeader = req.headers.authorization
     try {
-      const { isAuth, message } = await authUseCase.auth(authHeader)
+      const { isAuth, user_name, user_email, message } = await authUseCase.auth(authHeader)
   
       if (!isAuth) {
         res.status(401).json({ isAuth, message, message_ptbr: 'Sem autorização' })
       }
 
-      res.status(200).json({ isAuth, message, message_ptbr: 'Autorizado' })
+      res.status(200).json({ 
+        isAuth, user_name, user_email, message, message_ptbr: 'Autorizado' 
+      })
     } catch (error) {
       res.status(500).json({ 
         isAuth: false,
