@@ -3,7 +3,7 @@ const User = require('../models/User')
 class CustomUrlController {
   async redirect (req, res) {
     const path = req.path
-    const customUrl = `http://localhost:3333${path}`
+    const customUrl = `${process.env.BASE_URL}${path}`
 
     try {
       const user = await User.findOne({ urls: { $elemMatch: { shorted_url: customUrl } } })
