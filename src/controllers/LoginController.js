@@ -30,7 +30,6 @@ class LoginController {
       
       return res.status(200).json({ token })
     } catch (error) {
-      console.log(error)
       return res.status(500).json({ 
         message: 'Server error',
         message_ptbr: 'Erro no servidor'
