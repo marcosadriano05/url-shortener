@@ -2,6 +2,34 @@
 
 O URL Shortener é uma API para craiação de URLs curtas. Com essa API, o usuário pode realizar seu cadastro e login para utilizá-la. Com o login realizado, o usuário tem a possibilidade de adicionar uma URL na qual ele quer gerar uma URL mais curta. Ambos os endereços, tanto o original quanto o encurtado, são salvos no banco de dados junto com a data de criação, com isso o usuário pode realizar a requisição de busca por todas as URLs que ele já cadastrou.
 
+## Como utilizar
+
+- Precisa do Nodejs instalado
+- No diretório do projeto, execute o comando abaixo para instalar todas as dependências
+
+```shell
+npm install
+```
+
+ou
+
+```shell
+yarn
+```
+
+- Informe as variáveis de ambiente no arquivo .env na raiz do projeto.
+- Execute o comando abaixo para iniciar o servidor
+
+```shell
+npm start
+```
+
+ou
+
+```shell
+yarn start
+```
+
 ## Banco de dados
 
 O banco de dados utilizado foi o MongoDB, o model do usuário criado tem o formato a seguir:
@@ -24,6 +52,18 @@ O banco de dados utilizado foi o MongoDB, o model do usuário criado tem o forma
 }
 ```
 
+## Variáveis de ambiente
+
+Nesta API são utilizadas algumas variáveis de ambiente:
+
+```shell
+MONGO_DB_USER=username_mongodb
+MONGO_DB_PASSWORD=password_mongodb
+
+BASE_URL=base_url_of_application
+TOKEN_SECRET=token_secret
+```
+
 ## Rotas
 
 ### Cadastro
@@ -44,6 +84,10 @@ Essa rota recebe como requisição um JSON com os seguintes dados:
 ```
 Como resposta são enviados para sucesso e erro:
 
+- Se o cadastro for realizado com sucesso
+
+`status 200`
+
 ```json
 {
   "message": "Registration done successfully",
@@ -51,7 +95,42 @@ Como resposta são enviados para sucesso e erro:
 }
 ```
 
-ou
+- Se o email for inválido
+
+`status 400`
+
+```json
+{ 
+  "message": "Email with invalid format",
+  "message_ptbr": "Email com formato inválido"
+}
+```
+
+- Se o usuário já existe
+
+`status 400`
+
+```json
+{ 
+  "message": "User alredy exists",
+  "message_ptbr": "Usuário já existe"
+}
+```
+
+- Se as senhas não correspondem
+
+`status 400`
+
+```json
+{ 
+  "message": "Password not match",
+  "message_ptbr": "As senhas precisam ser iguais"
+}
+```
+
+- Se ocorre um erro no servidor
+
+`status 500`
 
 ```json
 { 
@@ -76,13 +155,39 @@ Essa rota recebe como requisição um JSON com os seguintes dados:
 ```
 Como resposta são enviados para sucesso e erro:
 
+- Se a requisição foi feita com sucesso
+
+`status 200`
+
 ```json
 {
   "token": "any_token"
 }
 ```
 
-ou
+- Se não houver nenhum usuário com aquelas credenciais
+
+`status 400`
+
+```json
+{ 
+  "message": "Invalid credentials",
+  "message_ptbr": "Credenciais inválidas"
+}
+```
+
+- Se a senha for inválida
+
+`status 400`
+
+```json
+{ 
+  "message": "Invalid credentials",
+  "message_ptbr": "Credenciais inválidas"
+}
+```
+
+- Se houver um erro no servidor
 
 ```json
 { 
@@ -106,6 +211,10 @@ Essa rota recebe como requisição um JSON com os seguintes dados:
 ```
 Como resposta são enviados para sucesso e erro:
 
+- Se a URL foi cadastrada com sucesso
+
+`status 200`
+
 ```json
 {
   "message": "URL registred",
@@ -113,7 +222,20 @@ Como resposta são enviados para sucesso e erro:
 }
 ```
 
-ou
+- Se o usuário não tem autorização
+
+`status 401`
+
+```json
+{
+  "message": "Unauthorized",
+  "message_ptbr": "Sem autorização"
+}
+```
+
+- Se ocorre um erro no servidor
+
+`status 500`
 
 ```json
 { 
@@ -132,7 +254,9 @@ Como é um método GET, não é enviado nenhum corpo na requisição.
 
 Como resposta são enviados para sucesso e erro:
 
-Se o usuário tiver duas URLs cadastradas
+- Se o usuário tiver duas URLs cadastradas
+
+`status 200`
 
 ```json
 [
@@ -151,7 +275,20 @@ Se o usuário tiver duas URLs cadastradas
 ]
 ```
 
-ou
+- Se o usuário não tem autorização
+
+`status 401`
+
+```json
+{
+  "message": "Unauthorized",
+  "message_ptbr": "Sem autorização"
+}
+```
+
+- Se ocorrer um erro no servidor
+
+`status 500`
 
 ```json
 { 
@@ -172,6 +309,8 @@ Como resposta são enviados para sucesso e erro:
 
 - Se o usuário estiver autorizado
 
+`status 200`
+
 ```json
 {
   "isAuth": true,
@@ -182,6 +321,8 @@ Como resposta são enviados para sucesso e erro:
 
 - Se o usuário não estiver autorizado
 
+`status 401`
+
 ```json
 {
   "isAuth": false,
@@ -190,7 +331,9 @@ Como resposta são enviados para sucesso e erro:
 }
 ```
 
-- Se houver um erro na requisição
+- Se houver um erro no servidor
+
+`status 500`
 
 ```json
 { 
