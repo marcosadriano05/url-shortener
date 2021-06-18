@@ -64,6 +64,31 @@ BASE_URL=base_url_of_application
 TOKEN_SECRET=token_secret
 ```
 
+## Estrutura do projeto
+
+```shell
+└───src
+    ├───controllers
+    ├───models
+    └───utils
+```
+
+### models
+
+Nessa pasta ficam os modelos utilizados para a criação de entidades no banco de dados.
+
+### controllers
+
+Nessa pasta ficam os arquivos que interagem tanto com os arquivos de Model quanto as rotas da API.
+
+### utils
+
+Nessa pasta ficam classes que podem ser utlizadas em operações específicas.
+
+### src
+
+Também na pasta src está o arquivo com todas as rotas da aplicação e o arquivo de configuração do servidor.
+
 ## Rotas
 
 ### Cadastro
